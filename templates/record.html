@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .record-detail {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .record-detail p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .back-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Record</h1>
+        
+        <div class="record-detail">
+            <p><span class="label">Timestamp:</span> {{ record.timestamp }}</p>
+            <p><span class="label">Name:</span> {{ record.name }}</p>
+            <p><span class="label">Age:</span> {{ record.age }}</p>
+            <p><span class="label">UID:</span> {{ record.uid }}</p>
+            <p><span class="label">Land History:</span> {{ record.land }}</p>
+            <p><span class="label">Hash:</span> {{ record.hash }}</p>
+            <p><span class="label">Previous Hash:</span> {{ record.previous_hash }}</p>
+        </div>
+        
+        <a href="/" class="back-btn">Back to Home</a>
+        <a href="/view_blockchain" class="back-btn" style="margin-left: 10px;">View Blockchain</a>
+    </div>
+</body>
+</html>

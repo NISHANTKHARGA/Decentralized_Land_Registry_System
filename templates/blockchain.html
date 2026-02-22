@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain Viewer - Land Registry</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 30px rgba(0,0,0,0.1);
+            overflow-x: auto;
+            margin: 30px 0;
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: normal;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            word-break: break-all;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .hash-column {
+            max-width: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .timestamp-column {
+            min-width: 160px;
+        }
+        
+        .block-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .genesis-badge {
+            background-color: #dc3545;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0px 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0px 5px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 50px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+            margin: 30px 0;
+        }
+        
+        .empty-message p {
+            font-size: 18px;
+            color: #666;
+            margin: 20px 0;
+        }
+        
+        .empty-message img {
+            max-width: 200px;
+            opacity: 0.5;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            pointer-events: none;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            
+            td, th {
+                padding: 8px;
+            }
+            
+            .stat-card {
+                min-width: 150px;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Blockchain Viewer - Land Registry</h1>
+        
+        <!-- Statistics Section -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-label">Total Blocks</div>
+                <div class="stat-value">{{ blockchain|length }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Unique UIDs</div>
+                <div class="stat-value">{{ blockchain|map(attribute='uid')|unique|list|length }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Latest Block</div>
+                <div class="stat-value">#{{ blockchain|length }}</div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">🏠 Back to Home</a>
+            <a href="/view_blockchain" class="btn btn-secondary">🔄 Refresh</a>
+        </div>
+        
+        <!-- Blockchain Table -->
+        <div class="table-container">
+            {% if blockchain %}
+            <table>
+                <thead>
+                    <tr>
+                        <th># Block</th>
+                        <th>Timestamp</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>UID</th>
+                        <th>Land History</th>
+                        <th>Hash</th>
+                        <th>Previous Hash</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for block in blockchain %}
+                    <tr>
+                        <td>
+                            <span class="block-indicator {% if loop.index == 1 %}genesis-badge{% endif %}">
+                                {% if loop.index == 1 %}Genesis{% else %}Block {{ loop.index }}{% endif %}
+                            </span>
+                        </td>
+                        <td class="timestamp-column">{{ block.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ block.name }}</td>
+                        <td>{{ block.age }}</td>
+                        <td>
+                            <span class="tooltip">{{ block.uid }}
+                                <span class="tooltiptext">Click to search this UID</span>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="tooltip">
+                                {{ block.land[:50] }}{% if block.land|length > 50 %}...{% endif %}
+                                <span class="tooltiptext">{{ block.land }}</span>
+                            </div>
+                        </td>
+                        <td class="hash-column">
+                            <span class="tooltip">
+                                {{ block.hash[:20] }}...
+                                <span class="tooltiptext">Full Hash: {{ block.hash }}</span>
+                            </span>
+                        </td>
+                        <td class="hash-column">
+                            {% if block.previous_hash %}
+                                <span class="tooltip">
+                                    {{ block.previous_hash[:20] }}...
+                                    <span class="tooltiptext">Previous Hash: {{ block.previous_hash }}</span>
+                                </span>
+                            {% else %}
+                                <span class="tooltip">
+                                    None
+                                    <span class="tooltiptext">Genesis block has no previous hash</span>
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if loop.index == 1 %}
+                                <span style="color: #dc3545; font-weight: bold;">🔴 Genesis</span>
+                            {% elif loop.index == blockchain|length %}
+                                <span style="color: #28a745; font-weight: bold;">🟢 Latest</span>
+                            {% else %}
+                                <span style="color: #ffc107; font-weight: bold;">🟡 Verified</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-message">
+                <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="Empty Blockchain">
+                <p>The blockchain is currently empty.</p>
+                <p>Add some records to view the blockchain.</p>
+                <a href="/" class="btn btn-primary">➕ Add First Record</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Blockchain Info Footer -->
+        <div class="footer">
+            <p>🔒 Each block is cryptographically linked to the previous block</p>
+            <p>⛓️ Blockchain is immutable - records cannot be altered once added</p>
+            <p>📅 Last updated: {{ now().strftime('%Y-%m-%d %H:%M:%S') if now else 'N/A' }}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Land Registry Using Blockchain</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+            font-size: 36px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .image-container img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        }
+        
+        .forms-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .form-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 30px rgba(0,0,0,0.3);
+        }
+        
+        .form-card h2 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input[type=text], 
+        input[type=number], 
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type=text]:focus,
+        input[type=number]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.3);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+        
+        input[type=submit]:focus {
+            outline: none;
+        }
+        
+        .view-all-btn {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .view-all-btn input[type=submit] {
+            width: auto;
+            min-width: 250px;
+            background-color: #2196F3;
+        }
+        
+        .view-all-btn input[type=submit]:hover {
+            background-color: #0b7dda;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .forms-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-card {
+                width: 90%;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Land Registry Using Blockchain</h1>
+        
+        <div class="image-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1200/1*mwpuwHSsNIlIirvWdjgIbw.jpeg" 
+                 alt="Blockchain Land Registry" 
+                 onerror="this.src='https://via.placeholder.com/800x400?text=Land+Registry+Blockchain'">
+        </div>
+        
+        <div class="forms-container">
+            <!-- Add Record Form -->
+            <div class="form-card">
+                <h2>➕ Add New Land Record</h2>
+                <form method="POST" action="/add_record">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                    
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" placeholder="Enter age" min="1" max="120" required>
+                    
+                    <label for="land">Land History / Description:</label>
+                    <textarea id="land" name="land" placeholder="Enter land details, location, history..." required></textarea>
+                    
+                    <label for="uid">Unique ID (UID):</label>
+                    <input type="text" id="uid" name="uid" placeholder="Enter UID " required>
+                    
+                    <input type="submit" value="Add Record to Blockchain">
+                </form>
+            </div>
+            
+            <!-- Get Record Form -->
+            <div class="form-card">
+                <h2>🔍 Get Patient Records</h2>
+                <form method="GET" action="/get_history">
+                    <label for="uid_search">Enter UID to Search:</label>
+                    <input type="text" id="uid_search" name="uid" placeholder="Enter UID to search" required>
+                    
+                    <input type="submit" value="Get Patient History">
+                </form>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <small>Search by UID to view all records of a patient</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View All Blockchain Button -->
+        <div class="view-all-btn">
+            <form method="GET" action="/view_blockchain">
+                <input type="submit" value="📊 View Complete Blockchain">
+            </form>
+        </div>
+        
+        <!-- Additional Info -->
+        <div class="footer">
+            <p>Secure Land Registry System using Blockchain Technology</p>
+            <p>© 2024 - All records are immutable and verifiable</p>
+        </div>
+    </div>
+</body>
+</html>
